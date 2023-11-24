@@ -318,3 +318,11 @@ article a {
 .total-likes .fa-heart {
   font-size: 24px;
 }
+
+.media-likes .fa-heart:hover {
+  cursor: pointer;
+}
+
+.fa-heart.liked {
+  color: #ad0000;
+}

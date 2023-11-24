@@ -22,6 +22,7 @@ async function portfolioTemplate(id) {
   generatePriceLikesAnchor(photographerData.price)
 
   handleLightbox()
+  likeMedia()
 }
 
 function generateHeader(photographerData) {
@@ -58,11 +59,14 @@ function generateMediasSections(mediasJsonData, photographerName) {
 }
 
 function generatePriceLikesAnchor(price) {
+  let totalLikes = 0
+  document.querySelectorAll('.media-likes .number-likes').forEach(mediaLikes => (totalLikes += parseInt(mediaLikes.textContent)))
+
   const sticky = document.querySelector('.sticky')
   sticky.innerHTML = `
   <div class='total-likes' title='Nombre de Likes' aria-label='Nombre de Likes'>
-    <p class='number-likes'>123456</p>
-    <span class='fa-solid fa-heart' aria-hidden='true'></span>
+  <p class='number-likes'>${totalLikes}</p>
+  <span class='fa-solid fa-heart' aria-hidden='true'></span>
   </div>
   <p class='price'>${price}€ / jour</p>
   `
@@ -177,4 +181,20 @@ function closeLightBox() {
   main.setAttribute('tabindex', '0')
 }
 
-// export getIdFromURL as default
+function likeMedia() {
+  const likeButtons = document.querySelectorAll('.media-likes .fa-heart')
+
+  function handleClick() {
+    //this.previousElementSibling <==> button.previousElementSibling (heart icon)
+    this.classList.add('liked')
+    const numberOfLikes = parseInt(this.previousElementSibling.textContent)
+    this.previousElementSibling.textContent = numberOfLikes + 1
+    const totalLikes = document.querySelector('.total-likes .number-likes')
+    totalLikes.textContent = parseInt(totalLikes.textContent) + 1
+    this.removeEventListener('click', handleClick)
+  }
+
+  likeButtons.forEach(button => {
+    button.addEventListener('click', handleClick)
+  })
+}
