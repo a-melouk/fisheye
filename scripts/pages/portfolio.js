@@ -56,6 +56,47 @@ function generateMediasSections(mediasJsonData, photographerName) {
     const mediaHTML = mediaObject.createMedia()
     mediaDiv.appendChild(mediaHTML)
   })
+  sortMedias('popularité')
+  const sortSelect = document.querySelector('.sort-select')
+  sortSelect.addEventListener('change', () => sortMedias(sortSelect.value))
+}
+
+function sortMedias(criteria) {
+  const mediaDiv = document.querySelector('.medias')
+  const articles = Array.from(mediaDiv.children)
+  switch (criteria) {
+    case 'popularité':
+      articles.sort((a, b) => sortMediasByLikes(a, b))
+      break
+    case 'date':
+      articles.sort((a, b) => sortMediasByDate(a, b))
+      break
+    case 'titre':
+      articles.sort((a, b) => sortMediasByTitle(a, b))
+      break
+    default:
+      console.error('Pas de critère')
+  }
+  mediaDiv.innerHTML = ''
+  articles.forEach(media => mediaDiv.appendChild(media))
+}
+
+function sortMediasByLikes(a, b) {
+  const aLikes = parseInt(a.querySelector('.media-likes .number-likes').textContent)
+  const bLikes = parseInt(b.querySelector('.media-likes .number-likes').textContent)
+  return bLikes - aLikes
+}
+
+function sortMediasByDate(a, b) {
+  const aDate = new Date(a.querySelector('.media-info .title').textContent)
+  const bDate = new Date(b.querySelector('.media-info .title').textContent)
+  return bDate - aDate
+}
+
+function sortMediasByTitle(a, b) {
+  const aTitle = a.querySelector('.media-info .title').textContent
+  const bTitle = b.querySelector('.media-info .title').textContent
+  return aTitle.localeCompare(bTitle)
 }
 
 function generatePriceLikesAnchor(price) {
