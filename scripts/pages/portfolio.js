@@ -88,8 +88,9 @@ function sortMediasByLikes(a, b) {
 }
 
 function sortMediasByDate(a, b) {
-  const aDate = new Date(a.querySelector('.media-info .title').textContent)
-  const bDate = new Date(b.querySelector('.media-info .title').textContent)
+  //Sort from the most recent to the oldest
+  const aDate = new Date(a.querySelector('.media-info .date').textContent)
+  const bDate = new Date(b.querySelector('.media-info .date').textContent)
   return bDate - aDate
 }
 
