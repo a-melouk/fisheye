@@ -56,22 +56,19 @@ function generateMediasSections(mediasJsonData, photographerName) {
     const mediaHTML = mediaObject.createMedia()
     mediaDiv.appendChild(mediaHTML)
   })
-  sortMedias('popularité')
-  const sortSelect = document.querySelector('.sort-select')
-  sortSelect.addEventListener('change', () => sortMedias(sortSelect.value))
 }
 
 function sortMedias(criteria) {
   const mediaDiv = document.querySelector('.medias')
   const articles = Array.from(mediaDiv.children)
   switch (criteria) {
-    case 'popularité':
+    case 'Popularité':
       articles.sort((a, b) => sortMediasByLikes(a, b))
       break
-    case 'date':
+    case 'Date':
       articles.sort((a, b) => sortMediasByDate(a, b))
       break
-    case 'titre':
+    case 'Titre':
       articles.sort((a, b) => sortMediasByTitle(a, b))
       break
     default:
@@ -82,8 +79,9 @@ function sortMedias(criteria) {
 }
 
 function sortMediasByLikes(a, b) {
-  const aLikes = parseInt(a.querySelector('.media-likes .number-likes').textContent)
-  const bLikes = parseInt(b.querySelector('.media-likes .number-likes').textContent)
+  //Sort from the most liked to the least liked
+  const aLikes = a.querySelector('.media-likes .number-likes').textContent
+  const bLikes = b.querySelector('.media-likes .number-likes').textContent
   return bLikes - aLikes
 }
 
@@ -95,6 +93,7 @@ function sortMediasByDate(a, b) {
 }
 
 function sortMediasByTitle(a, b) {
+  //Sort alphabetically (A-Z)
   const aTitle = a.querySelector('.media-info .title').textContent
   const bTitle = b.querySelector('.media-info .title').textContent
   return aTitle.localeCompare(bTitle)
@@ -107,8 +106,8 @@ function generatePriceLikesAnchor(price) {
   const sticky = document.querySelector('.sticky')
   sticky.innerHTML = `
   <div class='total-likes' title='Nombre de Likes' aria-label='Nombre de Likes'>
-  <p class='number-likes'>${totalLikes}</p>
-  <span class='fa-solid fa-heart' aria-hidden='true'></span>
+    <p class='number-likes'>${totalLikes}</p>
+    <span class='fa-solid fa-heart' aria-hidden='true'></span>
   </div>
   <p class='price'>${price}€ / jour</p>
   `
@@ -240,3 +239,31 @@ function likeMedia() {
     button.addEventListener('click', handleClick)
   })
 }
+
+const selectedItem = document.querySelector('.menu-item-selected')
+const menuItemsContainer = document.querySelector('.menu-items')
+const menuItems = document.querySelectorAll('.menu-item')
+selectedItem.addEventListener('click', () => {
+  menuItemsContainer.classList.replace('closed', 'opened')
+})
+
+menuItems.forEach(menuItem => {
+  menuItem.addEventListener('click', () => {
+    const firstItem = document.querySelector('.first-item')
+    //Remove order:0 from the first item
+    firstItem.classList.remove('first-item')
+    //Hide the first item's arrow
+    firstItem.children[0].classList.replace('shown', 'hidden')
+    firstItem.removeAttribute('aria-haspopup')
+
+    //Add order:0 to the selected item
+    menuItem.classList.add('first-item')
+    //Show the selected item's arrow
+    menuItem.children[0].classList.replace('hidden', 'shown')
+    menuItem.setAttribute('aria-haspopup', 'true')
+    selectedItem.innerHTML = menuItem.innerHTML
+    menuItemsContainer.classList.replace('opened', 'closed')
+
+    sortMedias(menuItem.textContent.trim())
+  })
+})
