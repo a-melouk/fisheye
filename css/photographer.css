@@ -1,6 +1,15 @@
 main {
   display: flex;
   flex-direction: column;
+  /* opacity: 0.4; */
+}
+
+main.closed {
+  opacity: 0.4;
+}
+
+main.opened {
+  opacity: 1;
 }
 
 #contact-modal {
@@ -56,14 +65,12 @@ form .contact-button {
   justify-self: center;
 }
 
-.modal.closed {
+.modal-container.closed {
   display: none;
 }
 
-.modal.opened {
+.modal-container.opened {
   align-items: center;
-  align-self: center;
-  background-color: #db8876;
   border-radius: 5px;
   box-shadow: -5px 10px 30px 0px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
@@ -76,6 +83,17 @@ form .contact-button {
   top: 69px;
   width: 670px;
   overflow-y: auto;
+  height: 90vh;
+  z-index: 99;
+  background-color: #db8876;
+  align-self: center;
+}
+
+.modal {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
 }
 
 .modal header {
@@ -103,6 +121,7 @@ form {
 form label {
   color: #312e2e;
   font-size: 36px;
+  font-weight: 600;
 }
 
 form div {
@@ -118,16 +137,19 @@ form input {
   height: 68px;
   border: none;
   border-radius: 5px;
+  font-size: 24px;
 }
 
 .no-scroll {
   overflow: hidden;
+  /* width: 100%; */
   width: calc(100% - 17px);
 }
 
 .hidden-scrollbar {
   /* width du scrollbar = 17px */
   right: calc(36px + 17px);
+  /* right: 36px; */
 }
 
 .displayed-scrollbar {
@@ -208,12 +230,27 @@ form input {
 
 #close-modal-btn span {
   color: #fff;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .lightbox button,
 #close-modal-btn {
   background-color: transparent;
   border: 0;
+  display: flex;
+  /* justify-content: flex-end;
+  align-self: flex-start; */
+}
+
+#close-modal-btn {
+  justify-content: flex-end;
+  align-self: flex-start;
+}
+
+.previous-button,
+.next-button {
+  align-self: center;
 }
 
 .previous-button {

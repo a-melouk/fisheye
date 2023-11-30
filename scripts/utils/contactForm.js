@@ -13,11 +13,12 @@ function displayModal() {
   document.querySelector('.sticky').classList.replace('displayed-scrollbar', 'hidden-scrollbar')
   main.setAttribute('aria-hidden', 'true')
   main.setAttribute('tabindex', '-1')
+  main.classList.replace('opened', 'closed')
 
   const closeBtn = document.getElementById('close-modal-btn')
   closeBtn.focus()
 
-  const modal = document.querySelector('.modal')
+  const modal = document.querySelector('.modal-container')
   modal.classList.replace('closed', 'opened')
   modal.setAttribute('aria-hidden', 'false')
   modal.setAttribute('tabindex', '0')
@@ -48,11 +49,12 @@ function closeModal() {
   main.setAttribute('aria-hidden', 'false')
   document.querySelector('.sticky').classList.replace('hidden-scrollbar', 'displayed-scrollbar')
 
-  const modal = document.querySelector('.modal')
+  const modal = document.querySelector('.modal-container')
   modal.classList.replace('opened', 'closed')
   modal.setAttribute('aria-hidden', 'true')
   modal.setAttribute('tabindex', '-1')
   main.setAttribute('tabindex', '0')
+  main.classList.replace('closed', 'opened')
 
   const contactBtn = document.querySelector('.contact-button')
   contactBtn.focus()

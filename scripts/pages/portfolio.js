@@ -71,9 +71,9 @@ function generatePriceLikesAnchor(price) {
 
   const sticky = document.querySelector('.sticky')
   sticky.innerHTML = `
-  <div class='total-likes' aria-label='Nombre total de Likes'>
+  <div class='total-likes' aria-label='Nombre total de likes'>
     <h3 class='number-likes'>${totalLikes}</h3>
-    <span class='fa-solid fa-heart' aria-hidden='true'></span>
+    <span class='fa-solid fa-heart' aria-hidden='true' role='image' aria-label='coeur'></span>
   </div>
   <h3 class='price' aria-label='Tarif journalier'>${price}€ / jour</h3>
   `
