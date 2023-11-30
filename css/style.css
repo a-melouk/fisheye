@@ -297,15 +297,16 @@ article a {
   position: fixed;
   bottom: 0;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 
 .total-likes {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   gap: 5px;
+  margin-left: 35px;
 }
 
 .total-likes .number-likes,
@@ -313,6 +314,10 @@ article a {
   font-size: 24px;
   font-weight: 600;
   color: #000;
+}
+
+.sticky .price {
+  margin-right: 35px;
 }
 
 .total-likes .fa-heart {

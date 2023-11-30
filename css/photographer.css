@@ -87,14 +87,13 @@ form .contact-button {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 19px;
   margin: auto;
   padding: 35px;
   position: absolute;
   top: 69px;
   width: 670px;
   overflow-y: auto;
-  height: 90vh;
 }
 
 .modal header {
@@ -169,47 +168,62 @@ form input {
 }
 
 .lightbox {
-  margin: 30px 100px;
   background-color: #fff;
   border: 2px solid #901c1c;
   display: grid;
-  grid-template-columns: 96px 1fr 96px;
-  grid-template-rows: 90px 1fr 32px;
+  grid-template-columns: 1fr 1050px 1fr;
+  grid-template-rows: 96px 900px 96px;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   align-items: center;
   justify-items: center;
-  width: 75vw;
-  height: 81vh;
+  width: 100%;
+  height: 100vh;
 }
 
 .lightbox-media {
-  width: 550px;
-  height: 500px;
   border-radius: 5px;
   object-fit: cover;
   grid-area: 2 / 2 / 3 / 3;
+  width: 1050px;
+  height: 900px;
 }
 
 .lightbox-title {
+  color: #901c1c;
+  font-size: 24px;
+  font-weight: 400;
   grid-area: 3 / 2 / 4 / 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
-.lightbox span {
+.fa-xmark {
   width: 72px;
   height: 72px;
-  color: #901c1c;
   font-size: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.lightbox span {
+  color: #901c1c;
+}
+
+#close-modal-btn span {
+  color: #fff;
+}
+/* color: #901c1c; */
+
 .lightbox span:hover {
   cursor: pointer;
 }
 
-.lightbox button {
+.lightbox button,
+#close-modal-btn {
   background-color: transparent;
   border: 0;
 }

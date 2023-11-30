@@ -1,6 +1,8 @@
 //Mettre le code JavaScript lié à la page photographer.html
 
 import Media from '../pages/Media.js'
+import { mediaLinkListener } from './Lightbox.js'
+import { likeMedia } from './Likes.js'
 
 export function getIdFromURL() {
   const queryString = window.location.search
@@ -21,8 +23,22 @@ async function portfolioTemplate(id) {
   generateMediasSections(mediasJsonData, photographerData.name)
   generatePriceLikesAnchor(photographerData.price)
 
-  handleLightbox()
+  const mediaLinks = Array.from(document.querySelectorAll('.medias article a'))
+  mediaLinks.forEach(link => {
+    link.addEventListener('click', () => mediaLinkListener(mediaLinks, link))
+  })
+
+  // handleLightbox()
   likeMedia()
+}
+
+//Function to fetch medias from local JSON file
+async function getMediasById(id) {
+  const url = './data/photographers.json'
+  let response = await fetch(url)
+  let data = await response.json()
+  const photographerMedias = data.media.filter(media => media.photographerId == id)
+  return photographerMedias
 }
 
 function generateHeader(photographerData) {
@@ -40,15 +56,6 @@ function generateHeader(photographerData) {
   `
 }
 
-//Function to fetch medias from local JSON file
-async function getMediasById(id) {
-  const url = './data/photographers.json'
-  let response = await fetch(url)
-  let data = await response.json()
-  const photographerMedias = data.media.filter(media => media.photographerId == id)
-  return photographerMedias
-}
-
 function generateMediasSections(mediasJsonData, photographerName) {
   const mediaDiv = document.querySelector('.medias')
   mediasJsonData.forEach(mediaItem => {
@@ -58,212 +65,16 @@ function generateMediasSections(mediasJsonData, photographerName) {
   })
 }
 
-function sortMedias(criteria) {
-  const mediaDiv = document.querySelector('.medias')
-  const articles = Array.from(mediaDiv.children)
-  switch (criteria) {
-    case 'Popularité':
-      articles.sort((a, b) => sortMediasByLikes(a, b))
-      break
-    case 'Date':
-      articles.sort((a, b) => sortMediasByDate(a, b))
-      break
-    case 'Titre':
-      articles.sort((a, b) => sortMediasByTitle(a, b))
-      break
-    default:
-      console.error('Pas de critère')
-  }
-  mediaDiv.innerHTML = ''
-  articles.forEach(media => mediaDiv.appendChild(media))
-}
-
-function sortMediasByLikes(a, b) {
-  //Sort from the most liked to the least liked
-  const aLikes = a.querySelector('.media-likes .number-likes').textContent
-  const bLikes = b.querySelector('.media-likes .number-likes').textContent
-  return bLikes - aLikes
-}
-
-function sortMediasByDate(a, b) {
-  //Sort from the most recent to the oldest
-  const aDate = new Date(a.querySelector('.media-info .date').textContent)
-  const bDate = new Date(b.querySelector('.media-info .date').textContent)
-  return bDate - aDate
-}
-
-function sortMediasByTitle(a, b) {
-  //Sort alphabetically (A-Z)
-  const aTitle = a.querySelector('.media-info .title').textContent
-  const bTitle = b.querySelector('.media-info .title').textContent
-  return aTitle.localeCompare(bTitle)
-}
-
 function generatePriceLikesAnchor(price) {
   let totalLikes = 0
   document.querySelectorAll('.media-likes .number-likes').forEach(mediaLikes => (totalLikes += parseInt(mediaLikes.textContent)))
 
   const sticky = document.querySelector('.sticky')
   sticky.innerHTML = `
-  <div class='total-likes' title='Nombre de Likes' aria-label='Nombre de Likes'>
-    <p class='number-likes'>${totalLikes}</p>
+  <div class='total-likes' aria-label='Nombre total de Likes'>
+    <h3 class='number-likes'>${totalLikes}</h3>
     <span class='fa-solid fa-heart' aria-hidden='true'></span>
   </div>
-  <p class='price'>${price}€ / jour</p>
+  <h3 class='price' aria-label='Tarif journalier'>${price}€ / jour</h3>
   `
 }
-//Renommer en loadLightbox
-function handleLightbox() {
-  const mediasCount = document.querySelector('.medias').childElementCount
-  const previousMedia = document.querySelector('.previous-button')
-  const nextMedia = document.querySelector('.next-button')
-  const closeButton = document.querySelector('.close-button')
-
-  //Get all links (all links are in the medias section)
-  const mediaLinks = Array.from(document.querySelectorAll('.medias article a'))
-
-  let currentMediaIndex = -1
-
-  mediaLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      currentMediaIndex = mediaLinks.indexOf(link)
-
-      //mediaFile is the image or video
-      const mediaFile = link.children[0]
-      const title = link.getAttribute('aria-label')
-      openLightBox()
-      changeLightboxMedia(mediaFile, title)
-    })
-  })
-
-  previousMedia.addEventListener('click', () => {
-    currentMediaIndex--
-    if (currentMediaIndex < 0) currentMediaIndex = mediasCount - 1
-    const previousMediaFile = mediaLinks[currentMediaIndex].children[0]
-    const previousMediaTitle = mediaLinks[currentMediaIndex].getAttribute('aria-label')
-    changeLightboxMedia(previousMediaFile, previousMediaTitle)
-  })
-
-  nextMedia.addEventListener('click', () => {
-    currentMediaIndex++
-    if (currentMediaIndex > mediasCount - 1) currentMediaIndex = 0
-    const nextMediaFile = mediaLinks[currentMediaIndex].children[0]
-    const nextMediaTitle = mediaLinks[currentMediaIndex].getAttribute('aria-label')
-    changeLightboxMedia(nextMediaFile, nextMediaTitle)
-  })
-
-  closeButton.addEventListener('click', () => {
-    closeLightBox()
-    resetLightbox()
-  })
-
-  //Navigation with keyboard
-  document.addEventListener('keydown', e => {
-    const key = e.key
-    if (key === 'ArrowLeft') previousMedia.click()
-    else if (key === 'ArrowRight') nextMedia.click()
-    else if (key === 'Escape') {
-      closeLightBox()
-      resetLightbox()
-    }
-  })
-}
-
-function changeLightboxMedia(mediaFile, title) {
-  resetLightbox()
-  const lightbox = document.querySelector('.lightbox')
-  if (mediaFile.tagName === 'IMG') {
-    const img = document.createElement('img')
-    img.src = mediaFile.src
-    img.alt = mediaFile.alt
-    img.classList.add('lightbox-media')
-    lightbox.appendChild(img)
-  } else if (mediaFile.tagName === 'VIDEO') {
-    const video = document.createElement('video')
-    video.setAttribute('controls', '')
-    const source = document.createElement('source')
-    source.src = document.querySelector('source').src
-    video.appendChild(source)
-    video.classList.add('lightbox-media')
-    lightbox.appendChild(video)
-  }
-  const titleP = document.querySelector('.lightbox-title')
-  titleP.innerHTML = title
-}
-
-function resetLightbox() {
-  //Delete the media in the lightbox if there is one
-  if (document.querySelector('.lightbox-media') !== null) {
-    document.querySelector('.lightbox').removeChild(document.querySelector('.lightbox-media'))
-  }
-}
-
-function openLightBox() {
-  const lightboxContainer = document.querySelector('.lightbox-container')
-  const main = document.querySelector('main')
-
-  lightboxContainer.classList.replace('closed', 'opened')
-  lightboxContainer.setAttribute('aria-hidden', 'false')
-  lightboxContainer.setAttribute('tabindex', '0')
-
-  main.setAttribute('aria-hidden', 'true')
-  main.setAttribute('tabindex', '-1')
-}
-
-function closeLightBox() {
-  const lightboxContainer = document.querySelector('.lightbox-container')
-  const main = document.querySelector('main')
-
-  lightboxContainer.classList.replace('opened', 'closed')
-  lightboxContainer.setAttribute('aria-hidden', 'true')
-  lightboxContainer.setAttribute('tabindex', '-1')
-
-  main.setAttribute('aria-hidden', 'false')
-  main.setAttribute('tabindex', '0')
-}
-
-function likeMedia() {
-  const likeButtons = document.querySelectorAll('.media-likes .fa-heart')
-
-  function handleClick() {
-    //this.previousElementSibling <==> button.previousElementSibling (heart icon)
-    this.classList.add('liked')
-    const numberOfLikes = parseInt(this.previousElementSibling.textContent)
-    this.previousElementSibling.textContent = numberOfLikes + 1
-    const totalLikes = document.querySelector('.total-likes .number-likes')
-    totalLikes.textContent = parseInt(totalLikes.textContent) + 1
-    this.removeEventListener('click', handleClick)
-  }
-
-  likeButtons.forEach(button => {
-    button.addEventListener('click', handleClick)
-  })
-}
-
-const selectedItem = document.querySelector('.menu-item-selected')
-const menuItemsContainer = document.querySelector('.menu-items')
-const menuItems = document.querySelectorAll('.menu-item')
-selectedItem.addEventListener('click', () => {
-  menuItemsContainer.classList.replace('closed', 'opened')
-})
-
-menuItems.forEach(menuItem => {
-  menuItem.addEventListener('click', () => {
-    const firstItem = document.querySelector('.first-item')
-    //Remove order:0 from the first item
-    firstItem.classList.remove('first-item')
-    //Hide the first item's arrow
-    firstItem.children[0].classList.replace('shown', 'hidden')
-    firstItem.removeAttribute('aria-haspopup')
-
-    //Add order:0 to the selected item
-    menuItem.classList.add('first-item')
-    //Show the selected item's arrow
-    menuItem.children[0].classList.replace('hidden', 'shown')
-    menuItem.setAttribute('aria-haspopup', 'true')
-    selectedItem.innerHTML = menuItem.innerHTML
-    menuItemsContainer.classList.replace('opened', 'closed')
-
-    sortMedias(menuItem.textContent.trim())
-  })
-})

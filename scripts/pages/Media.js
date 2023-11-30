@@ -33,7 +33,7 @@ class Media {
         <p class='date'>${this.date}</p>
         <div class='media-likes' title='Nombre de likes' aria-label='Nombre de likes'>
           <h3 class='number-likes'>${this.likes}</h3>
-          <span class="fa-solid fa-heart" aria-hidden='true'></span>
+          <span class="fa-solid fa-heart" aria-hidden='true' liked='false'></span>
         </div>
       </div> 
     `
