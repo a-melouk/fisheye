@@ -44,25 +44,34 @@ const menuItemsContainer = document.querySelector('.menu-items')
 const menuItems = document.querySelectorAll('.menu-item')
 selectedItem.addEventListener('click', () => {
   menuItemsContainer.classList.replace('closed', 'opened')
+  selectedItem.classList.add('hidden')
 })
 
 menuItems.forEach(menuItem => {
   menuItem.addEventListener('click', () => {
     const firstItem = document.querySelector('.first-item')
+
     //Remove order:0 from the first item
     firstItem.classList.remove('first-item')
+
     //Hide the first item's arrow
     firstItem.children[0].classList.replace('shown', 'hidden')
     firstItem.removeAttribute('aria-haspopup')
 
     //Add order:0 to the selected item
     menuItem.classList.add('first-item')
+
     //Show the selected item's arrow
     menuItem.children[0].classList.replace('hidden', 'shown')
     menuItem.setAttribute('aria-haspopup', 'true')
-    selectedItem.innerHTML = menuItem.innerHTML
-    menuItemsContainer.classList.replace('opened', 'closed')
 
+    selectedItem.innerHTML = menuItem.innerHTML
+    selectedItem.classList.remove('hidden')
+
+    menuItemsContainer.classList.replace('opened', 'closed')
+    menuItemsContainer.prepend(menuItem)
     sortMedias(menuItem.textContent.trim())
   })
 })
+
+function rearrangeMenuItems() {}

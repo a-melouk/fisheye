@@ -197,6 +197,13 @@ form input {
 
 .lightbox span {
   color: #901c1c;
+  font-size: 56px;
+  width: 72px;
+  height: 72px;
+}
+
+.lightbox span:hover {
+  cursor: pointer;
 }
 
 #close-modal-btn span {
@@ -304,7 +311,7 @@ form input {
   text-align: left;
   display: flex;
   align-items: center;
-  order: 1;
+  /* order: 1; */
 }
 
 .menu-items.closed {
@@ -321,5 +328,5 @@ form input {
 }
 
 .first-item {
-  order: 0;
+  /* order: 0; */
 }

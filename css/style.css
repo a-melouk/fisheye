@@ -242,13 +242,14 @@ article a {
   display: flex;
   justify-content: space-between;
   width: 350px;
-  height: 31px;
+  align-items: flex-start;
 }
 
 .media-info .title {
   color: #901c1c;
   font-size: 24px;
   font-weight: 400;
+  height: 53px;
 }
 
 .media-info .media-likes {
