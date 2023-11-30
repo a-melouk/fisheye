@@ -45,6 +45,7 @@ const menuItems = document.querySelectorAll('.menu-item')
 selectedItem.addEventListener('click', () => {
   menuItemsContainer.classList.replace('closed', 'opened')
   selectedItem.classList.add('hidden')
+  menuItemsContainer.setAttribute('aria-expanded', 'true')
 })
 
 menuItems.forEach(menuItem => {
@@ -67,8 +68,10 @@ menuItems.forEach(menuItem => {
 
     selectedItem.innerHTML = menuItem.innerHTML
     selectedItem.classList.remove('hidden')
+    document.querySelector('.select-menu').setAttribute('aria-activedescendant', menuItem.id)
 
     menuItemsContainer.classList.replace('opened', 'closed')
+    menuItemsContainer.setAttribute('aria-expanded', 'false')
     menuItemsContainer.prepend(menuItem)
     sortMedias(menuItem.textContent.trim())
   })

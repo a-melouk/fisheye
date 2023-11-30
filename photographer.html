@@ -23,18 +23,19 @@
 		<div class="sort-container" aria-label="Trier les médias par">
 			<h3 id="sort-label">Trier par</h3>
 
-			<div class="select-menu" role="menu" aria-label="Critères de tri">
+			<div class="select-menu" role="menu" aria-label="Critères de tri" aria-expanded="false"
+				aria-activedescendant="Popularite">
 				<button class="menu-item-selected" tabindex="0" aria-haspopup="true">Popularité<span
 						class="fa-solid fa-chevron-down shown"></span>
 				</button>
 
 				<div class="menu-items closed">
-					<button class="menu-item first-item" tabindex="0" role="menuitem"
+					<button class="menu-item first-item" tabindex="0" role="menuitem" id="Popularite"
 						aria-label="Trier par popularité">Popularité<span class="fa-solid fa-chevron-down shown"></span>
 					</button>
-					<button class="menu-item" tabindex="0" role="menuitem" aria-label="Trier par date">Date<span
+					<button class="menu-item" tabindex="0" role="menuitem" id="Date" aria-label="Trier par date">Date<span
 							class="fa-solid fa-chevron-down hidden"></span></button>
-					<button class="menu-item" tabindex="0" role="menuitem" aria-label="Trier par titre">Titre<span
+					<button class="menu-item" tabindex="0" role="menuitem" id="Titre" aria-label="Trier par titre">Titre<span
 							class="fa-solid fa-chevron-down hidden"></span>
 					</button>
 				</div>
