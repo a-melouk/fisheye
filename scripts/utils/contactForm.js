@@ -4,6 +4,11 @@ function displayModal() {
   const id = urlParams.get('id')
   const name = JSON.parse(sessionStorage.getItem(id)).name
 
+  const focusableElements = document.querySelectorAll('.menu-item-selected, .menu-item, article a,[tabindex]:not([tabindex="-1"]),.photograph-header button')
+  focusableElements.forEach(element => {
+    element.setAttribute('tabindex', '-1')
+  })
+
   const contactMe = document.getElementById('modal-header')
   contactMe.innerHTML = `Contactez-moi <br>${name}`
 
@@ -15,13 +20,14 @@ function displayModal() {
   main.setAttribute('tabindex', '-1')
   main.classList.replace('opened', 'closed')
 
-  const closeBtn = document.getElementById('close-modal-btn')
-  closeBtn.focus()
+  // const closeBtn = document.getElementById('close-modal-btn')
+  // closeBtn.focus()
 
   const modal = document.querySelector('.modal-container')
   modal.classList.replace('closed', 'opened')
   modal.setAttribute('aria-hidden', 'false')
   modal.setAttribute('tabindex', '0')
+  modal.focus()
 
   document.addEventListener('keydown', e => {
     const key = e.key
@@ -58,4 +64,8 @@ function closeModal() {
 
   const contactBtn = document.querySelector('.contact-button')
   contactBtn.focus()
+  const focusableElements = document.querySelectorAll('.menu-item-selected, .menu-item, article a,[tabindex]:not([tabindex="-1"]),.photograph-header button')
+  focusableElements.forEach(element => {
+    element.setAttribute('tabindex', '0')
+  })
 }

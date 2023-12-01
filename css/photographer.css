@@ -31,7 +31,7 @@ form input {
 }
 
 textarea {
-  width: 100%;
+  width: -webkit-fill-available;
   height: 170px;
   border-radius: 5px;
   background-color: #fff;
