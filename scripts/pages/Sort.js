@@ -43,9 +43,32 @@ const selectedItem = document.querySelector('.menu-item-selected')
 const menuItemsContainer = document.querySelector('.menu-items')
 const menuItems = document.querySelectorAll('.menu-item')
 selectedItem.addEventListener('click', () => {
+  const firstItem = document.querySelector('.first-item')
+  firstItem.children[0].classList.add('fa-rotate-180')
   menuItemsContainer.classList.replace('closed', 'opened')
   selectedItem.classList.add('hidden')
   menuItemsContainer.setAttribute('aria-expanded', 'true')
+  const menuOpened = menuItemsContainer.getAttribute('aria-expanded')
+  if (menuOpened === 'true') {
+    menuItemsContainer.focus()
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        menuItemsContainer.classList.replace('opened', 'closed')
+        selectedItem.classList.remove('hidden')
+        menuItemsContainer.setAttribute('aria-expanded', 'false')
+      }
+      /* else if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        const firstItem = document.querySelector('.first-item')
+        firstItem.classList.remove('first-item')
+        firstItem.nextElementSibling.focus()
+        firstItem.nextElementSibling.classList.add('first-item')
+      } else if (e.key === 'ArrowUp') {
+        const lastItem = document.querySelector('.last-item')
+        lastItem.previousElementSibling.focus()
+      } */
+    })
+  }
 })
 
 menuItems.forEach(menuItem => {
@@ -64,6 +87,7 @@ menuItems.forEach(menuItem => {
 
     //Show the selected item's arrow
     menuItem.children[0].classList.replace('hidden', 'shown')
+    menuItem.children[0].classList.remove('fa-rotate-180')
     menuItem.setAttribute('aria-haspopup', 'true')
 
     selectedItem.innerHTML = menuItem.innerHTML
@@ -73,8 +97,7 @@ menuItems.forEach(menuItem => {
     menuItemsContainer.classList.replace('opened', 'closed')
     menuItemsContainer.setAttribute('aria-expanded', 'false')
     menuItemsContainer.prepend(menuItem)
+
     sortMedias(menuItem.textContent.trim())
   })
 })
-
-function rearrangeMenuItems() {}
