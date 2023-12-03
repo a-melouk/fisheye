@@ -84,14 +84,11 @@ function openLightBox() {
 
   lightboxContainer.classList.replace('closed', 'opened')
   lightboxContainer.setAttribute('aria-hidden', 'false')
-  lightboxContainer.setAttribute('tabindex', '0')
 
   main.setAttribute('aria-hidden', 'true')
-  main.setAttribute('tabindex', '-1')
   main.classList.add('hidden')
 
   headerPortfolio.setAttribute('aria-hidden', 'true')
-  headerPortfolio.setAttribute('tabindex', '-1')
   headerPortfolio.classList.add('hidden')
 }
 
@@ -102,14 +99,11 @@ function closeLightBox() {
 
   lightboxContainer.classList.replace('opened', 'closed')
   lightboxContainer.setAttribute('aria-hidden', 'true')
-  lightboxContainer.setAttribute('tabindex', '-1')
 
   main.setAttribute('aria-hidden', 'false')
-  main.setAttribute('tabindex', '0')
   main.classList.remove('hidden')
 
   headerPortfolio.setAttribute('aria-hidden', 'false')
-  headerPortfolio.setAttribute('tabindex', '0')
   headerPortfolio.classList.remove('hidden')
 }
 

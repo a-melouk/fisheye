@@ -30,12 +30,37 @@ form input {
   background-color: #fff;
 }
 
+form input:focus,
+textarea:focus,
+#close-modal-btn:focus {
+  outline: 4px solid #901c1c;
+}
+
+#open-modal-btn,
+.menu-item,
+.contact-button {
+  transition: all 0.3s ease;
+  outline: none;
+  background: #901c1c;
+}
+#open-modal-btn:focus,
+.menu-item:focus,
+.contact-button:focus {
+  background-color: #c40d0d;
+  border: 2px solid black;
+}
+#open-modal-btn:active,
+.menu-item:active {
+  top: 2px;
+}
+
 textarea {
   width: -webkit-fill-available;
   height: 170px;
   border-radius: 5px;
   background-color: #fff;
   resize: none;
+  font-size: 24px;
 }
 
 .photograph-header {
@@ -71,21 +96,14 @@ form .contact-button {
 
 .modal-container.opened {
   align-items: center;
-  border-radius: 5px;
-  box-shadow: -5px 10px 30px 0px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 19px;
-  margin: auto;
   padding: 35px;
   position: absolute;
-  top: 69px;
-  width: 670px;
+  width: 100%;
   overflow-y: auto;
-  height: 90vh;
-  z-index: 99;
-  background-color: #db8876;
+  height: 100%;
   align-self: center;
 }
 
@@ -94,6 +112,10 @@ form .contact-button {
   display: flex;
   flex-direction: column;
   gap: 19px;
+  width: 670px;
+  padding: 35px;
+  background-color: #db8876;
+  border-radius: 5px;
 }
 
 .modal header {
@@ -161,8 +183,8 @@ form input {
 }
 
 .lightbox-container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
@@ -171,7 +193,7 @@ form input {
   justify-content: center;
 }
 
-.lightbox {
+/* .lightbox {
   background-color: #fff;
   border: 2px solid #901c1c;
   display: grid;
@@ -183,14 +205,34 @@ form input {
   justify-items: center;
   width: 100%;
   height: 100vh;
+} */
+
+.lightbox {
+  display: grid;
+  grid-template-columns: 96px 1050px 96px;
+  grid-template-rows: 64px 832px 64px;
+  justify-items: center;
+}
+
+.previous-button {
+  grid-area: 2 / 1 / 3 / 2;
+}
+
+.next-button {
+  grid-area: 2 / 3 / 3 / 4;
+}
+
+.close-button {
+  grid-area: 1 / 3 / 2 / 4;
 }
 
 .lightbox-media {
   border-radius: 5px;
   object-fit: cover;
-  grid-area: 2 / 2 / 3 / 3;
+  grid-area: 1 / 2 / 3 / 3;
   width: 1050px;
   height: 900px;
+  order: 2;
 }
 
 .lightbox-title {
@@ -202,6 +244,11 @@ form input {
   height: 100%;
   display: flex;
   align-items: center;
+}
+
+.previous-button,
+.next-button {
+  align-self: center;
 }
 
 .fa-xmark {
@@ -220,15 +267,27 @@ form input {
 .lightbox span {
   color: #901c1c;
   font-size: 56px;
-  width: 72px;
-  height: 72px;
+  width: 100%;
+  height: 100%;
+  /* border: 3px solid #901c1c; */
 }
+
+/* .lightbox button:focus,
+#close-modal-btn:focus {
+  box-shadow: 0 0 0 0.25rem white, 0 0 0 0.5rem #901c1c;
+}
+
+.lightbox button:active,
+#close-modal-btn:active {
+  box-shadow: none;
+} */
 
 .lightbox span:hover {
   cursor: pointer;
 }
 
 #close-modal-btn span {
+  width: 60px;
   color: #fff;
   display: flex;
   justify-content: flex-end;
@@ -237,39 +296,19 @@ form input {
 .lightbox button,
 #close-modal-btn {
   background-color: transparent;
-  border: 0;
   display: flex;
-  /* justify-content: flex-end;
-  align-self: flex-start; */
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  align-items: center;
+  border: 0;
+  box-sizing: content-box;
 }
 
 #close-modal-btn {
-  justify-content: flex-end;
   align-self: flex-start;
-}
-
-.previous-button,
-.next-button {
-  align-self: center;
-}
-
-.previous-button {
-  order: 1;
-  grid-area: 2 / 1 / 3 / 2;
-}
-
-.next-button {
-  order: 3;
-  grid-area: 2 / 3 / 3 / 4;
-}
-
-.lightbox-media {
-  order: 2;
-}
-
-.close-button {
-  order: 4;
-  grid-area: 1 / 3 / 2 / 4;
+  margin: 0;
+  padding: 0;
 }
 
 .date {
@@ -277,7 +316,6 @@ form input {
 }
 
 .sort-container {
-  /* width: 100%; */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -312,6 +350,11 @@ form input {
   text-align: left;
   user-select: none;
   width: 170px;
+}
+
+.menu-item-selected:focus,
+#open-modal-btn:focus {
+  background-color: #c40d0d;
 }
 
 .fa-chevron-down {
@@ -362,8 +405,4 @@ form input {
 
 .hidden {
   display: none;
-}
-
-.first-item {
-  /* order: 0; */
 }

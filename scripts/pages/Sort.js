@@ -38,35 +38,45 @@ function sortMediasByTitle(a, b) {
   const bTitle = b.querySelector('.media-info .title').textContent
   return aTitle.localeCompare(bTitle)
 }
-
-const selectedItem = document.querySelector('.menu-item-selected')
+//Get the displayed/selected item (not from the menu)
+const currentSelectedItem = document.querySelector('.menu-item-selected')
 const menuItemsContainer = document.querySelector('.menu-items')
-const menuItems = document.querySelectorAll('.menu-item')
-selectedItem.addEventListener('click', () => {
+let menuItems = document.querySelectorAll('.menu-item')
+currentSelectedItem.addEventListener('click', () => {
+  //Get the first item in the menu
   const firstItem = document.querySelector('.first-item')
+
+  //Rotate the arrow of the first item (because menu is opened)
   firstItem.children[0].classList.add('fa-rotate-180')
+
+  //Display the menu
   menuItemsContainer.classList.replace('closed', 'opened')
-  selectedItem.classList.add('hidden')
+  //Hise the arrow of the selected item (because menu is opened)
+  currentSelectedItem.classList.add('hidden')
+  //Set aria-expanded to true for accessibility
   menuItemsContainer.setAttribute('aria-expanded', 'true')
   const menuOpened = menuItemsContainer.getAttribute('aria-expanded')
   if (menuOpened === 'true') {
-    menuItemsContainer.focus()
+    firstItem.focus()
+    let currentItemIndex = Array.from(menuItems).indexOf(firstItem)
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         menuItemsContainer.classList.replace('opened', 'closed')
-        selectedItem.classList.remove('hidden')
+        currentSelectedItem.classList.remove('hidden')
         menuItemsContainer.setAttribute('aria-expanded', 'false')
-      }
-      /* else if (e.key === 'ArrowDown') {
-        e.preventDefault()
-        const firstItem = document.querySelector('.first-item')
-        firstItem.classList.remove('first-item')
-        firstItem.nextElementSibling.focus()
-        firstItem.nextElementSibling.classList.add('first-item')
+      } else if (e.key === 'ArrowDown') {
+        e.stopPropagation()
+        if (currentItemIndex < menuItems.length - 1) {
+          currentItemIndex++
+          menuItems[currentItemIndex].focus()
+        }
       } else if (e.key === 'ArrowUp') {
-        const lastItem = document.querySelector('.last-item')
-        lastItem.previousElementSibling.focus()
-      } */
+        e.stopPropagation()
+        if (currentItemIndex > 0) {
+          currentItemIndex--
+          menuItems[currentItemIndex].focus()
+        }
+      }
     })
   }
 })
@@ -90,13 +100,14 @@ menuItems.forEach(menuItem => {
     menuItem.children[0].classList.remove('fa-rotate-180')
     menuItem.setAttribute('aria-haspopup', 'true')
 
-    selectedItem.innerHTML = menuItem.innerHTML
-    selectedItem.classList.remove('hidden')
+    currentSelectedItem.innerHTML = menuItem.innerHTML
+    currentSelectedItem.classList.remove('hidden')
     document.querySelector('.select-menu').setAttribute('aria-activedescendant', menuItem.id)
 
     menuItemsContainer.classList.replace('opened', 'closed')
     menuItemsContainer.setAttribute('aria-expanded', 'false')
     menuItemsContainer.prepend(menuItem)
+    menuItems = document.querySelectorAll('.menu-item')
 
     sortMedias(menuItem.textContent.trim())
   })
